@@ -5296,15 +5296,15 @@
     const findAll = (editor, name) => {
       const body = SugarElement.fromDom(editor.getBody());
       const markers = descendants(body, `[${ dataAnnotation() }="${ name }"]`);
-      const directory = {};
+      const dir = {};
       each$e(markers, m => {
         if (!isBogusElement(m, body)) {
           const uid = get$9(m, dataAnnotationId());
-          const nodesAlready = get$a(directory, uid).getOr([]);
-          directory[uid] = nodesAlready.concat([m]);
+          const nodesAlready = get$a(dir, uid).getOr([]);
+          dir[uid] = nodesAlready.concat([m]);
         }
       });
-      return directory;
+      return dir;
     };
 
     const setup$y = (editor, registry) => {
@@ -9420,8 +9420,8 @@
           editor.selection.moveToBookmark(bookmark);
         },
         getAll: name => {
-          const directory = findAll(editor, name);
-          return map$2(directory, elems => map$3(elems, elem => elem.dom));
+          const dir = findAll(editor, name);
+          return map$2(dir, elems => map$3(elems, elem => elem.dom));
         }
       };
     };
@@ -16736,7 +16736,7 @@
       'port',
       'relative',
       'path',
-      'directory',
+      'dir',
       'file',
       'query',
       'anchor'
@@ -16818,7 +16818,7 @@
       }
       constructor(url, settings = {}) {
         this.path = '';
-        this.directory = '';
+        this.dir = '';
         url = trim(url);
         this.settings = settings;
         const baseUri = settings.base_uri;
@@ -16832,7 +16832,7 @@
           url = (baseUri ? baseUri.protocol || 'http' : 'http') + '://mce_host' + url;
         }
         if (!/^[\w\-]*:?\/\//.test(url)) {
-          const baseUrl = baseUri ? baseUri.path : new URI(document.location.href).directory;
+          const baseUrl = baseUri ? baseUri.path : new URI(document.location.href).dir;
           if ((baseUri === null || baseUri === void 0 ? void 0 : baseUri.protocol) === '') {
             url = '//mce_host' + self.toAbsPath(baseUrl, url);
           } else {
@@ -16876,7 +16876,7 @@
         const pathMatch = /^(.*?)\/?(\w+)?$/.exec(path);
         if (pathMatch) {
           this.path = pathMatch[0];
-          this.directory = pathMatch[1];
+          this.dir = pathMatch[1];
           this.file = pathMatch[2];
         }
         this.source = '';
